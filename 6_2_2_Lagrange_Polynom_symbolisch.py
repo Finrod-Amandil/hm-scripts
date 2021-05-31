@@ -2,9 +2,9 @@ import sympy as sy
 
 x = sy.symbols('x')
 
-x_val = sy.Matrix([0, 2500, 5000, 10000])  # xi
-y_val = sy.Matrix([1013, 747, 540, 226])   # yi
-x_int = 3750  # Zu interpolierende Stelle
+x_val = sy.Matrix([8, 10, 12, 14])           # xi
+y_val = sy.Matrix([11.2, 13.4, 15.3, 19.5])  # yi
+x_int = 11  # Zu interpolierende Stelle
 
 n = x_val.shape[0] - 1
 
