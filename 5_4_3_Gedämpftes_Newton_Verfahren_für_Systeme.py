@@ -128,6 +128,8 @@ while not is_finished(f_lambda, x_approx):
 
     x_approx = np.append(x_approx, [x_next], axis=0)
 
-    print('x({}) = {} (k = {})\n'.format(x_approx.shape[0] - 1, x_next, k_actual))
+    print('x({}) = {} (k = {})'.format(x_approx.shape[0] - 1, x_next, k_actual))
+    print('‖f(x({}))‖₂ = {}'.format(i + 1, np.linalg.norm(f_lambda(x_next), 2)))
+    print('‖x({}) - x({})‖₂ = {}\n'.format(i + 1, i, np.linalg.norm(x_next - x_n, 2)))
 
 print(x_approx)

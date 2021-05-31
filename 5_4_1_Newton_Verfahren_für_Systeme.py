@@ -97,7 +97,9 @@ while not is_finished(f_lambda, x_approx):
 
     print('x({}) = x({}) + 𝛅({})'.format(i+1, i, i))
     x_next = x_n + delta.reshape(x0.shape[0], )                  # x(n+1) = x(n) + 𝛅(n)
-    print('x({}) = {}\n'.format(i+1, x_next))
+    print('x({}) = {}'.format(i+1, x_next))
+    print('‖f(x({}))‖₂ = {}'.format(i+1, np.linalg.norm(f_lambda(x_next), 2)))
+    print('‖x({}) - x({})‖₂ = {}\n'.format(i + 1, i, np.linalg.norm(x_next - x_n, 2)))
 
     x_approx = np.append(x_approx, [x_next], axis=0)
 
