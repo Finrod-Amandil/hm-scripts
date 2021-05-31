@@ -68,6 +68,7 @@ Df = f.jacobian(x)
 print('Ganze Jacobi-Matrix: Df = ' + str(Df))
 print('LATEX (Zum Anschauen eingeben unter https://www.codecogs.com/latex/eqneditor.php):')
 print(sy.latex(Df))
+print('Für eine schrittweise, detaillierte Berechnung der Jacobi-Matrix kann das Skript "5_2_4_Jacobi_Matrix_schrittweise_von_Hand_berechnen.py" verwendet werden')
 print()
 
 # Sympy-Funktionen kompatibel mit Numpy machen
@@ -77,15 +78,27 @@ Df_lambda = sy.lambdify([(x1, x2)], Df, "numpy")
 # Newton-Iterationen
 x_approx = np.empty(shape=(0, 2), dtype=np.float64)  # Array mit Lösungsvektoren x0 bis xn
 x_approx = np.append(x_approx, [x0], axis=0)  # Start-Vektor in Array einfügen
-print('\tx{}:\t{}'.format(0, x0))
+print('x({}) = {}\n'.format(0, x0))
 
 while not is_finished(f_lambda, x_approx):
+    i = x_approx.shape[0] - 1
+    print('ITERATION ' + str(i + 1))
+    print('-------------------------------------')
+
     x_n = x_approx[-1]  # x(n) (letzter berechneter Wert)
 
+    print('𝛅({}) ist die Lösung des LGS Df(x({})) * 𝛅({}) = -1 * f(x({}))'.format(i, i, i, i))
+    print('Df(x({})) = \n{},\nf(x({})) = \n{}'.format(i, Df_lambda(x_n), i, f_lambda(x_n)))
+    print('LGS mit LATEX (Zum Anschauen eingeben unter https://www.codecogs.com/latex/eqneditor.php):')
+    print(sy.latex(sy.Matrix(Df_lambda(x_n))) + '\\cdot\\delta^{(' + str(i) + ')}=-1\\cdot' + sy.latex(sy.Matrix(f_lambda(x_n))))
+
     delta = np.linalg.solve(Df_lambda(x_n), -1 * f_lambda(x_n))  # 𝛅(n) aus Df(x(n)) * 𝛅(n) = -1 * f(x(n))
+    print('𝛅({}) = \n{}\n'.format(i, delta))
+
+    print('x({}) = x({}) + 𝛅({})'.format(i+1, i, i))
     x_next = x_n + delta.reshape(x0.shape[0], )                  # x(n+1) = x(n) + 𝛅(n)
+    print('x({}) = {}\n'.format(i+1, x_next))
 
     x_approx = np.append(x_approx, [x_next], axis=0)
 
-    print('\tx{}:\t{}'.format(x_approx.shape[0] - 1, x_next))
-
+print(x_approx)
