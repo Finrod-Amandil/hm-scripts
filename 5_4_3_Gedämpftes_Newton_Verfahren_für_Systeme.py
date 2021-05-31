@@ -9,7 +9,7 @@ def is_finished_max_iterations(f, x, n_max):
     return x.shape[0] - 1 >= n_max
 
 
-# Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ ‖x(n+1)‖ * 𝛜
+# Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ ‖x(n+1)‖₂ * 𝛜
 def is_finished_relative_error(f, x, eps):
     if x.shape[0] < 2:
         return False
@@ -17,7 +17,7 @@ def is_finished_relative_error(f, x, eps):
     return np.linalg.norm(x[-1] - x[-2], 2) <= np.linalg.norm(x[-1], 2) * 1.0 * eps
 
 
-# Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ 𝛜
+# Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ 𝛜
 def is_finished_absolute_error(f, x, eps):
     if x.shape[0] < 2:
         return False
@@ -25,7 +25,7 @@ def is_finished_absolute_error(f, x, eps):
     return np.linalg.norm(x[-1] - x[-2], 2) <= 1.0 * eps
 
 
-# Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖ ≤ 𝛜
+# Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖₂ ≤ 𝛜
 def is_finished_max_residual(f, x, eps):
     if x.shape[0] < 1:
         return False
@@ -54,9 +54,9 @@ k_max = 4  # Maximale Alternativen für 𝛅 (vgl. Skript Seite 107)
 # Wähle das Abbruchkriterium (bei passender Zeile Kommentar entfernen):
 def is_finished(f, x):
     return is_finished_max_iterations(f, x, 9)      # Abbruchkriterium a): Abbruch nach einer bestimmten Anzahl Iterationen
-    # return is_finished_relative_error(f, x, 1e-5)  # Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ ‖x(n+1)‖ * 𝛜
-    # return is_finished_absolute_error(f, x, 1e-5)  # Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ 𝛜
-    # return is_finished_max_residual(f, x, 1e-5)    # Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖ ≤ 𝛜
+    # return is_finished_relative_error(f, x, 1e-5)  # Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ ‖x(n+1)‖₂ * 𝛜
+    # return is_finished_absolute_error(f, x, 1e-5)  # Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ 𝛜
+    # return is_finished_max_residual(f, x, 1e-5)    # Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖₂ ≤ 𝛜
 
 
 """
@@ -99,15 +99,15 @@ while not is_finished(f_lambda, x_approx):
     x_next = x_n + delta.reshape(x0.shape[0], )  # x(n+1) = x(n) + 𝛅(n) (provisorischer Kandidat, falls Dämpfung nichts nützt)
 
     # Finde das minimale k ∈ {0, 1, ..., k_max} für welches 𝛅(n) / 2^k eine verbessernde Lösung ist (vgl. Skript S. 107)
-    last_residual = np.linalg.norm(f_lambda(x_n), 2)  # ‖f(x(n))‖
-    print('Berechne das Residuum der letzten Iteration ‖f(x(n))‖ = ' + str(last_residual))
+    last_residual = np.linalg.norm(f_lambda(x_n), 2)  # ‖f(x(n))‖₂
+    print('Berechne das Residuum der letzten Iteration ‖f(x(n))‖₂ = ' + str(last_residual))
 
     k = 0
     k_actual = 0
     while k <= k_max:
         print('Versuche es mit k = ' + str(k) + ':')
-        new_residual = np.linalg.norm(f_lambda(x_n + (delta.reshape(x0.shape[0], ) / (2 ** k))), 2)  # ‖f(x(n) + 𝛅(n) / 2^k)‖
-        print('Berechne das neue Residuum ‖f(x(n) + 𝛅(n) / 2^k)‖ = ' + str(new_residual))
+        new_residual = np.linalg.norm(f_lambda(x_n + (delta.reshape(x0.shape[0], ) / (2 ** k))), 2)  # ‖f(x(n) + 𝛅(n) / 2^k)‖₂
+        print('Berechne das neue Residuum ‖f(x(n) + 𝛅(n) / 2^k)‖₂ = ' + str(new_residual))
 
         if new_residual < last_residual:
             print('Das neue Residuum ist kleiner, verwende also k = ' + str(k))

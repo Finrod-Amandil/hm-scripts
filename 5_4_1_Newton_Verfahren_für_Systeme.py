@@ -9,7 +9,7 @@ def is_finished_max_iterations(f, x, n_max):
     return x.shape[0] - 1 >= n_max
 
 
-# Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ ‖x(n+1)‖ * 𝛜
+# Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ ‖x(n+1)‖₂ * 𝛜
 def is_finished_relative_error(f, x, eps):
     if x.shape[0] < 2:
         return False
@@ -17,7 +17,7 @@ def is_finished_relative_error(f, x, eps):
     return np.linalg.norm(x[-1] - x[-2], 2) <= np.linalg.norm(x[-1], 2) * 1.0 * eps
 
 
-# Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ 𝛜
+# Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ 𝛜
 def is_finished_absolute_error(f, x, eps):
     if x.shape[0] < 2:
         return False
@@ -25,7 +25,7 @@ def is_finished_absolute_error(f, x, eps):
     return np.linalg.norm(x[-1] - x[-2], 2) <= 1.0 * eps
 
 
-# Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖ ≤ 𝛜
+# Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖₂ ≤ 𝛜
 def is_finished_max_residual(f, x, eps):
     if x.shape[0] < 1:
         return False
@@ -52,9 +52,9 @@ x0 = np.array([-1000, 1500])  # Startwert
 # Wähle das Abbruchkriterium (bei passender Zeile Kommentar entfernen):
 def is_finished(f, x):
     return is_finished_max_iterations(f, x, 9)      # Abbruchkriterium a): Abbruch nach einer bestimmten Anzahl Iterationen
-    # return is_finished_relative_error(f, x, 1e-5)  # Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ ‖x(n+1)‖ * 𝛜
-    # return is_finished_absolute_error(f, x, 1e-5)  # Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖ ≤ 𝛜
-    # return is_finished_max_residual(f, x, 1e-5)    # Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖ ≤ 𝛜
+    # return is_finished_relative_error(f, x, 1e-5)  # Abbruchkriterium b): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ ‖x(n+1)‖₂ * 𝛜
+    # return is_finished_absolute_error(f, x, 1e-5)  # Abbruchkriterium c): Abbruch, wenn ‖x(n+1) - x(n)‖₂ ≤ 𝛜
+    # return is_finished_max_residual(f, x, 1e-5)    # Abbruchkriterium d): Abbruch, wenn ‖f(x(n+1))‖₂ ≤ 𝛜
 
 
 """
