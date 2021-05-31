@@ -38,7 +38,7 @@ for row in range(f.shape[0]):
         d = sy.diff(f[row], x[col])
         print('∂f' + str(rd) + '/∂x' + str(cd) + ' = ' + str(d))
         print('LATEX (Zum Anschauen eingeben unter https://www.codecogs.com/latex/eqneditor.php):')
-        print('∂f' + str(rd) + '/∂x' + str(cd) + ' = ' + str(sy.latex(d)) + '\n')
+        print('\\frac{\\partial f_' + str(rd) + '}{\\partial x_' + str(cd) + '}=' + str(sy.latex(d)) + '\n')
 
 print('------------------------------------------------------------------------------------------------------------')
 
@@ -59,3 +59,5 @@ for i in range(x.shape[0]):
 Dfx0_eval = Dfx0.evalf()
 
 print('Jacobi-Matrix ausgewertet an Stelle x0 = ' + str(x0) + ": Df(x0) = " + str(Dfx0_eval))
+print('LATEX (Zum Anschauen eingeben unter https://www.codecogs.com/latex/eqneditor.php):')
+print(sy.latex(Dfx0_eval))
