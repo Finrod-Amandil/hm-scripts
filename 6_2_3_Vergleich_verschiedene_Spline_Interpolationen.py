@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 x = np.array([4, 6, 8, 10], dtype=np.float64)  # Stützpunkte (Knoten) xi
-y = np.array([9, 3, 8.5, 9], dtype=np.float64)  # Stützpunkte (Knoten) yi
+y = np.array([9, 3, 10, 9], dtype=np.float64)  # Stützpunkte (Knoten) yi
 
 x_int = 9
 i_int = np.max(np.where(x <= x_int))  # Finde die Stützstelle, deren x-Wert am grössten, aber gerade noch kleiner ist als x_int
