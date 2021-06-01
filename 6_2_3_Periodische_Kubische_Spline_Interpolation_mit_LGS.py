@@ -16,8 +16,8 @@ print('{} Spline-Polynome {}. Grades (je {} Koeffizienten) => {} * {} = {} Unbek
 # Si''(x) = ci * 2 + di * 6(x - xi)
 # Si'''(x) = di * 6
 
-# Natürliche kubische Spline-Interpolation mit 3 Stützstellen
-# -----------------------------------------------------------
+# Periodische kubische Spline-Interpolation mit 3 Stützstellen
+# ------------------------------------------------------------
 A = np.array([
    # a0 a1 a2 b0 b1 b2 c0 c1 c2 d0 d1 d2
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # S0(x0) = y0 <=> a0 + b0(x0 - x0) + c0(x0 - x0)^2 + d0(x0 - x0)^3 = y0 <=> a0 = y0 (Spline 0 muss durch (x0, y0) gehen)
