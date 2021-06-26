@@ -45,7 +45,7 @@ f = sy.Matrix([
     (x2 - 500) ** 2 / 279 ** 2 - (x1 - 300) ** 2 / (500 ** 2 - 279 ** 2) - 1
 ])
 
-x = sy.Matrix([x1, x2])       # Wenn mehr oder weniger als 2 Variablen auftreten, diese Liste anpassen!
+x = sy.Matrix([x1, x2])
 x0 = np.array([-1000, 1500])  # Startwert
 
 
