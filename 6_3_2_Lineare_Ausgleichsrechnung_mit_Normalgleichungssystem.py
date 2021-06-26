@@ -26,9 +26,9 @@ coeff_direct = np.linalg.solve(A.T @ A, A.T @ y)
 coeff_qr = np.linalg.solve(R, Q.T @ y)
 coeff_polyfit = np.polyfit(x, y, 2)
 
-error_direct = np.linalg.norm(y - A @ coeff_direct, 2)
-error_qr = np.linalg.norm(y - A @ coeff_qr, 2)
-error_polyfit = np.linalg.norm(y - A @ coeff_polyfit, 2)
+error_direct = np.linalg.norm(y - A @ coeff_direct, 2) ** 2
+error_qr = np.linalg.norm(y - A @ coeff_qr, 2) ** 2
+error_polyfit = np.linalg.norm(y - A @ coeff_polyfit, 2) ** 2
 
 print('\n\nMit direktem Lösen von AT * A * λ = AT * y: λ = ' + str(coeff_direct))
 print('Mit QR-Zerlegung: λ = ' + str(coeff_qr))
