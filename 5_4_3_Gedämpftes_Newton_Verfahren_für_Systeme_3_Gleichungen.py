@@ -94,7 +94,8 @@ while not is_finished(f_lambda, x_approx):
     print('LGS mit LATEX (Zum Anschauen eingeben unter https://www.codecogs.com/latex/eqneditor.php):')
     print(sy.latex(sy.Matrix(Df_lambda(x_n))) + '\\cdot\\delta^{(' + str(i) + ')}=-1\\cdot' + sy.latex(sy.Matrix(f_lambda(x_n))))
 
-    delta = np.linalg.solve(Df_lambda(x_n), -1 * f_lambda(x_n))  # 𝛅(n) aus Df(x(n)) * 𝛅(n) = -1 * f(x(n))
+    [Q, R] = np.linalg.qr(Df_lambda(x_n))
+    delta = np.linalg.solve(R, -Q.T @ f_lambda(x_n)).flatten()  # 𝛅(n) aus Df(x(n)) * 𝛅(n) = -1 * f(x(n))
     print('𝛅({}) = \n{}\n'.format(i, delta))
 
     x_next = x_n + delta.reshape(x0.shape[0], )  # x(n+1) = x(n) + 𝛅(n) (provisorischer Kandidat, falls Dämpfung nichts nützt)

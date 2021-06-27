@@ -49,7 +49,8 @@ x_approx = np.append(x_approx, [x0], axis=0)  # Start-Vektor in Array einfügen
 while x_approx.shape[0] < 2 or not np.linalg.norm(x_approx[-1] - x_approx[-2], 2) <= 1.0 * eps:  # Für weitere Abbruchbedingungen vgl. Skripte 5_4_x
     i = x_approx.shape[0] - 1
     x_n = x_approx[-1]  # x(n) (letzter berechneter Wert)
-    delta = np.linalg.solve(Df_lambda(x_n), -1 * f_lambda(x_n))  # 𝛅(n) aus Df(x(n)) * 𝛅(n) = -1 * f(x(n))
+    [Q, R] = np.linalg.qr(Df_lambda(x_n))
+    delta = np.linalg.solve(R, -Q.T @ f_lambda(x_n)).flatten()  # 𝛅(n) aus Df(x(n)) * 𝛅(n) = -1 * f(x(n))
     x_next = x_n + delta.reshape(x0.shape[0], )                  # x(n+1) = x(n) + 𝛅(n)
     x_approx = np.append(x_approx, [x_next], axis=0)
 
