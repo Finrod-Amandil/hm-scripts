@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 x = np.array([4, 6, 8, 10], dtype=np.float64)  # Stützpunkte (Knoten) xi
-y = np.array([6, 3, 9, 6], dtype=np.float64)  # Stützpunkte (Knoten) yi (Achtung: für periodische Spline muss y0 = y3 sein!)
+y = np.array([6, 3, 9, 0], dtype=np.float64)  # Stützpunkte (Knoten) yi
 x_int = 9  # Zu interpolierender Wert
 
 n = x.shape[0] - 1  # Anzahl Spline-Polynome
@@ -16,8 +16,8 @@ print('{} Spline-Polynome {}. Grades (je {} Koeffizienten) => {} * {} = {} Unbek
 # Si''(x) = ci * 2 + di * 6(x - xi)
 # Si'''(x) = di * 6
 
-# Periodische kubische Spline-Interpolation mit 3 Stützstellen
-# ------------------------------------------------------------
+# Not-a-knot kubische Spline-Interpolation mit 4 Stützstellen
+# -----------------------------------------------------------
 A = np.array([
    # a0 a1 a2 b0 b1 b2 c0 c1 c2 d0 d1 d2
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # S0(x0) = y0 <=> a0 + b0(x0 - x0) + c0(x0 - x0)^2 + d0(x0 - x0)^3 = y0 <=> a0 = y0 (Spline 0 muss durch (x0, y0) gehen)
@@ -30,8 +30,8 @@ A = np.array([
     [0, 0, 0, 0, 1, -1, 0, 2*(x[2]-x[1]), 0, 0, 3*(x[2]-x[1])**2, 0],  # S1'(x2) = S2'(x2) <=> S1'(x2) - S2'(x2) = 0 <=> b1 - b2 + c1 * 2(x2 - x1) - c2 * 2(x2 - x2) + d1 * 3(x2 - x1)^2 - d2 * 3(x2 - x2)^2 = 0 <=> b1 - b2 + c1 * 2(x2 - x1) + d1 * 3(x2 - x1)^2 = 0 (Keine Knicke zwischen S1 und S2)
     [0, 0, 0, 0, 0, 0, 2, -2, 0, 6*(x[1]-x[0]), 0, 0],  # S0''(x1) = S1''(x1) <=> S0''(x1) - S1''(x1) = 0 <=> c0 * 2 - c1 * 2 + d0 * 6(x1 - x0) - d0 * 6(x1 - x1) = 0 <=> c0 * 2 - c1 * 2 + d0 * 6(x1 - x0) = 0 (Gleiche Krümmung zwischen S0 und S1)
     [0, 0, 0, 0, 0, 0, 0, 2, -2, 0, 6*(x[2]-x[1]), 0],  # S1''(x2) = S2''(x2) <=> S1''(x2) - S2''(x2) = 0 <=> c1 * 2 - c2 * 2 + d1 * 6(x2 - x1) - d1 * 6(x2 - x2) = 0 <=> c1 * 2 - c2 * 2 + d1 * 6(x2 - x1) = 0 (Gleiche Krümmung zwischen S1 und S2)
-    [0, 0, 0, 1, 0, -1, 0, 0, -2*(x[3]-x[2]), 0, 0, -3*(x[3]-x[2])**2],  # PERIODISCHE SPLINE: S0'(x0) = S2'(x3) <=> S0'(x0) - S2'(x3) = 0 <=> b0 - b2 + c0 * 2(x0 - x0) - c2 * 2(x3 - x2) + d0 * 3(x0 - x0)^2 - d2 * 3(x3 - x2)^2 = 0 <=> b0 - b2 - c2 * 2(x3 - x2) - d2 * 3(x3 - x2)^2 = 0 (Gleiche Steigung am Anfang und Ende)
-    [0, 0, 0, 0, 0, 0, 2, 0, -2, 0, 0, -6*(x[3]-x[2])]  # PERIODISCHE SPLINE: S0''(x0) = S2''(x3) <=> S0''(x0) - S2''(x3) = 0 <=> c0 * 2 - c2 * 2 + d0 * 6(x0 - x0) - d2 * 6(x3 -x2) = 0 <=> c0 * 2 - c2 * 2 - d2 * 6(x3 -x2) = 0 (Gleiche Krümmung am Anfang und Ende)
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 6, -6, 0],  # NOT-A-KNOT: S0'''(x1) = S1'''(x1) <=> S0'''(x1) - S1'''(x1) = 0 <=> d0 * 6 - d1 * 6 = 0
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, -6]  # NOT-A-KNOT: S1'''(x2) = S2'''(x2) <=> S1'''(x2) - S2'''(x2) = 0 <=> d1 * 6 - d2 * 6 = 0
 ], dtype=np.float64)
 
 b = np.array([
@@ -45,8 +45,8 @@ b = np.array([
     0,  # S1'(x2) - S2'(x2) = 0
     0,  # S0''(x1) - S1''(x1) = 0
     0,  # S1''(x2) - S2''(x2) = 0
-    0,  # S0'(x0) - S2'(x3) = 0
-    0,  # S0''(x0) - S2''(x3) = 0
+    0,  # S0'''(x1) - S1'''(x1) = 0
+    0,  # S1'''(x2) - S2'''(x2) = 0
 ], dtype=np.float64)
 
 print('\nLöse LGS Ax = b mit')
