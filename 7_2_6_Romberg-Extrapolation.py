@@ -4,13 +4,13 @@ import numpy as np
 def Tf(f, a, b, n, j):
     print("     Startwert a = " + str(a))
     print("       Endwert b = " + str(b))
-    print("Anzahl Scritte n = " + str(n))
+    print("Anzahl Schritte n = " + str(n))
 
     h = (b - a) / n
 
     print("  Schrittweite h = (b - a) / n = " + str(h))
 
-    xi = np.array([a + i * ((b - a) / n) for i in range(1, n)], dtype=np.float64)
+    xi = np.array([a + i * h for i in range(1, n)], dtype=np.float64)
 
     print("xi = " + str(xi))
 
