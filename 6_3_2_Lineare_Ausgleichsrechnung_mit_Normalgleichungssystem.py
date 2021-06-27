@@ -24,7 +24,7 @@ print('\nLöse das LGS R * λ = QT * y')
 
 coeff_direct = np.linalg.solve(A.T @ A, A.T @ y)
 coeff_qr = np.linalg.solve(R, Q.T @ y)
-coeff_polyfit = np.polyfit(x, y, 2)
+coeff_polyfit = np.polyfit(x, y, A.shape[1] - 1)
 
 error_direct = np.linalg.norm(y - A @ coeff_direct, 2) ** 2
 error_qr = np.linalg.norm(y - A @ coeff_qr, 2) ** 2
